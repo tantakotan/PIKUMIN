@@ -17,12 +17,16 @@ else:
 
 ## オブジェクトの生成まとめ
 parashi = dict()
+csv_folder = './tpls'
 csvfile = 'sample.csv'
 tpl_list = []
 tpl_folder = './tpls'
 tpl_appends_complete = ''
 dev = sys.argv[1]
 config_column = 1
+
+# path
+csv_path = os.path.join(csv_folder, csvfile)
 
 # テンプレートファイルの読み込み
 env = Environment(loader = FileSystemLoader('.'))
@@ -31,7 +35,7 @@ env.lstrip_blocks = True
 
 #----------argv_check_from_csv.py-----------#
 # CSVからデバイス名の抽出 row = CSVファイルの index に書いてあるデバイス名
-with open(csvfile, "r", encoding="utf-8_sig") as f:
+with open(csv_path, "r", encoding="utf-8_sig") as f:
     row = f.readline().replace('\n', '').split(",")
     config = row.pop(config_column)     # csv の index 名をここで取得してしまう
 
@@ -41,7 +45,7 @@ if(dev in row):
 else:
     print(
     "引数デバイス名NG\n"
-    " CSVファイル名:",csvfile,"\n"
+    " CSVパス:",csv_path,"\n"
     " 入力可能デバイス名:",row
     )
     exit()
@@ -49,7 +53,7 @@ else:
 #----------argv_check_from_csv.py-----------#
 
 #------csv_read_tpl.py--------#
-with open(csvfile, "r", encoding="utf-8_sig") as f:
+with open(csv_path, "r", encoding="utf-8_sig") as f:
     tpl = csv.reader(f, delimiter=',')
     trash = next(tpl)
 
@@ -61,14 +65,17 @@ with open(csvfile, "r", encoding="utf-8_sig") as f:
         f = open(os.path.join(tpl_folder, i))
         tpl_appends_complete += f.read() + "\n"
 
-print()
-print(tpl_appends_complete)
-print()
+tdatetime = datetime.now()
+template_file = dev + '_template' + '_' + tdatetime.strftime('%Y%m%d') + '.conf'
+
+with open(os.path.join(tpl_folder, template_file), mode='w') as f:
+    f.write(tpl_appends_complete)
+
 
 #------csv_read_tpl.py--------#
 
 #------jinja2_render-------#
-with open(csvfile, "r", encoding="utf-8_sig") as f:
+with open(csv_path, "r", encoding="utf-8_sig") as f:
     for i in csv.DictReader(f):
         parashi[i[config]] = i[dev]
 
