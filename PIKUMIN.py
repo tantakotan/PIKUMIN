@@ -15,9 +15,6 @@ else:
     print("example: python sample.py device_name")
     exit()
 
-# argv import
-dev = sys.argv[1]
-
 # path import
 csv_folder = './tpls'
 csv_file = 'sample.csv'
@@ -27,6 +24,8 @@ tpl_path = os.path.abspath(csv_folder)
 # strings import
 tpl_csv_index = 'tpl'
 config_csv_index = 'config'
+# argv import
+dev_csv_index = sys.argv[1]
 
 # path check
 if not os.path.exists(csv_path):
@@ -36,8 +35,15 @@ elif not os.path.exists(tpl_path):
     print('not found...TPL FOLDER:' + tpl_path)
     exit()
 
-tpl_list = csv_process.columns_of_index(csv_path, tpl_csv_index)
-cfg_list = csv_process.columns_of_index(csv_path, config_csv_index)
+csv_process.check_of_index(csv_path, tpl_csv_index)
+csv_process.check_of_index(csv_path, config_csv_index)
+csv_process.check_of_index(csv_path, dev_csv_index)
+
+tpl_list = csv_process.list_of_index(csv_path, tpl_csv_index)
+cfg_dict = csv_process.dict_of_indexs(csv_path, config_csv_index, dev_csv_index)
+# dev_dict = csv_process.dict_device(csv_path, dev_csv_index)
+
+
 
 print(tpl_list)
-print(cfg_list)
+print(cfg_dict)
