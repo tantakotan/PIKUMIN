@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import csv
+import os
+
 
 def list_of_index(arg1, arg2):
+
     with open(arg1, 'r', encoding='utf-8_sig') as f:
         tpl = csv.reader(f, delimiter=',')
         tpl_list = []
@@ -19,6 +22,7 @@ def list_of_index(arg1, arg2):
 
         return tpl_list
 
+
 def dict_of_indexs(arg1, arg2, arg3):
     with open(arg1, 'r', encoding='utf-8_sig') as f:
         dev_dict = dict()
@@ -26,6 +30,7 @@ def dict_of_indexs(arg1, arg2, arg3):
             dev_dict[i[arg2]] = i[arg3]
 
         return dev_dict
+
 
 def check_of_index(arg1, arg2):
     with open(arg1, 'r', encoding='utf-8_sig') as f:
@@ -46,13 +51,9 @@ def check_of_index(arg1, arg2):
             exit()
 
 
-
-
-
-
-
-
-
-
-
-
+def check_of_path(path):
+    if os.path.exists(path):
+        print('file path check...OK: ' + path)
+    else:
+        print('file path check...NG: ' + path)
+        exit()
