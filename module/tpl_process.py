@@ -3,7 +3,7 @@
 import os
 
 
-def bond(arg1, arg2):
+def bond_tpl(arg1, arg2):
     x = ''
 
     for i in arg2:
@@ -13,7 +13,7 @@ def bond(arg1, arg2):
     return x
 
 
-def check_of_file(tpl_path, tpl_list):
+def check_file(tpl_path, tpl_list):
     b = os.path.isdir(tpl_path)
 
     if b:

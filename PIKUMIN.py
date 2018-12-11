@@ -2,10 +2,9 @@
 
 import os
 import sys
-sys.path.append('./module')
-import csv_process
-import tpl_process
-import jinja2_process
+from module import csv_process
+from module import tpl_process
+from module import jinja2_process
 
 # argv check
 if len(sys.argv) == 2:
@@ -29,22 +28,23 @@ config_csv_index = 'config'
 dev_csv_index = sys.argv[1]
 
 # path check
-csv_process.check_of_path(csv_path)
-csv_process.check_of_path(tpl_path)
+csv_process.check_path(csv_path)
+csv_process.check_path(tpl_path)
 
 # csv file check
-csv_process.check_of_index(csv_path, tpl_csv_index)
-csv_process.check_of_index(csv_path, config_csv_index)
-csv_process.check_of_index(csv_path, dev_csv_index)
+csv_process.check_index(csv_path, tpl_csv_index)
+csv_process.check_index(csv_path, config_csv_index)
+csv_process.check_index(csv_path, dev_csv_index)
 
 # create template dictionary
-tpl_list = csv_process.list_of_index(csv_path, tpl_csv_index)
-cfg_dict = csv_process.dict_of_indexs(csv_path, config_csv_index, dev_csv_index)
+tpl_list = csv_process.get_columns(csv_path, tpl_csv_index)
+cfg_dict = csv_process.get_dictionary(csv_path, config_csv_index, dev_csv_index)
 
 # create tpl file
-tpl_process.check_of_file(tpl_path, tpl_list)
-text_of_tpl = tpl_process.bond(tpl_path, tpl_list)
+tpl_process.check_file(tpl_path, tpl_list)
+text_of_tpl = tpl_process.bond_tpl(tpl_path, tpl_list)
 
 # create configuration files for jinja2
+jinja2_process.create_template(text_of_tpl, tpl_path, dev_csv_index)
 j2_temp = jinja2_process.j2_render(text_of_tpl, cfg_dict)
-jinja2_process.file_add_time(j2_temp, tpl_path, dev_csv_index)
+jinja2_process.create_file(j2_temp, tpl_path, dev_csv_index)
