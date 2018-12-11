@@ -1,6 +1,6 @@
 # TAKOS
-./.idea
-./components
+.idea/
+components/
 
 
 # Byte-compiled / optimized / DLL files
