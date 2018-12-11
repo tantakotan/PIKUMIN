@@ -18,18 +18,20 @@ def j2_render(text_of_template, dict_of_config):
 def create_file(j2_temp, directory_path, file_name):
     s = datetime.now()
     s2 = file_name + '_' + s.strftime('%Y%m%d') + '.conf'
+    s3 = os.path.join(directory_path, s2)
 
-    with open(os.path.join(directory_path, s2), mode='w') as f:
+    with open(s3, mode='w') as f:
         f.write(j2_temp)
 
-    print('create file successfuly...: ' + s2)
+    print('create file successfuly...: ' + s3)
 
 
 def create_template(template_string, directory_path, file_name):
     s = datetime.now()
     s2 = file_name + '_template_' + s.strftime('%Y%m%d') + '.conf'
+    s3 = os.path.join(directory_path, s2)
 
-    with open(os.path.join(directory_path, s2), mode='w') as f:
+    with open(s3, mode='w') as f:
         f.write(template_string)
 
-    print('create file successfuly...: ' + s2)
+    print('create file successfuly...: ' + s3)
