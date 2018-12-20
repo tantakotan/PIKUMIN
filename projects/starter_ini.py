@@ -3,7 +3,7 @@
 import sys
 from projects.iniinstaller import iniinst
 
-def starter(arg1):
+def starterIni(arg1):
     print(arg1)
 
     check_ini = iniinst.IniInstall(arg1)

@@ -25,6 +25,7 @@ def create_file(j2_temp, directory_path, file_name):
 
     print('create file successfuly...: ' + s3)
 
+
 def create_template(template_string, directory_path, file_name):
     s = datetime.now()
     s2 = file_name + '_template_' + s.strftime('%Y%m%d') + '.conf'
@@ -34,4 +35,3 @@ def create_template(template_string, directory_path, file_name):
         f.write(template_string)
 
     print('create template successfuly...: ' + s3)
-
