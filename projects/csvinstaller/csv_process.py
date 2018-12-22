@@ -23,11 +23,21 @@ def get_columns(arg1, arg2):
     return tpl_list
 
 
-def get_dictionary(arg1, arg2, arg3):
-    with open(arg1, 'r', encoding='utf-8_sig') as f:
-        dev_dict = dict()
-        for i in csv.DictReader(f):
-            dev_dict[i[arg2]] = i[arg3]
+def get_dictionary(path_of_csv, index_of_conf, index_of_pa):
+    dev_dict = dict()
+    with open(path_of_csv, 'r', encoding='utf-8_sig') as f:
+        for i2 in csv.DictReader(f):
+            print(i2)
+            for i in range(len(index_of_pa)):
+                tmp_dict = dict()
+                tmp2_dict = dict()
+                tmp_dict[i2[index_of_conf]] = i2[index_of_pa[i]]
+                print(tmp_dict)
+                tmp2_dict[index_of_pa[i]] = tmp_dict
+                dev_dict.update(tmp2_dict)
+                print(dev_dict)
+
+
 
     return dev_dict
 
@@ -52,15 +62,11 @@ def check_index(path_of_csv, index_of_hoge):
         elif type(index_of_hoge) is list:
             list_of_hoge = index_of_hoge
 
-        i2 = 0
-
-        while i2 < len(list_of_hoge):
-
+        for i2 in range(len(list_of_hoge)):
             count_index = [i for i, x in enumerate(list_of_index) if x == list_of_hoge[i2]]
 
             if list_of_hoge[i2] in list_of_index:
                 print('index check...OK: ' + list_of_hoge[i2])
-                i2 += 1
             else:
                 print('index check...NG: ' + list_of_hoge[i2])
                 exit()

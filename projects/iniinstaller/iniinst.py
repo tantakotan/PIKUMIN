@@ -19,5 +19,4 @@ class IniInstall:
 
         for i in list_of_inisection:
             dict_of_ini[i] = dict(date_of_ini.items(i))
-
         return dict_of_ini

@@ -21,10 +21,12 @@ def starter_nw(dict_of_ini):
     csv_process.check_index(path_of_csv, index_of_conf)
 
     if flag_of_nw:
-        list_of_index = csv_process.get_index(path_of_csv)
-        list_of_index.remove(index_of_tpl)
-        list_of_index.remove(index_of_conf)
-        csv_process.check_index(path_of_csv, list_of_index)
+        index_of_nw = csv_process.get_index(path_of_csv)
+        index_of_nw.remove(index_of_tpl)
+        index_of_nw.remove(index_of_conf)
+
+        csv_process.check_index(path_of_csv, index_of_nw)
+
     else:
         csv_process.check_index(path_of_csv, index_of_nw)
 
