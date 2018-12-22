@@ -24,21 +24,21 @@ def get_columns(arg1, arg2):
 
 
 def get_dictionary(path_of_csv, index_of_conf, index_of_pa):
+    tmp_dict = dict()
     dev_dict = dict()
     with open(path_of_csv, 'r', encoding='utf-8_sig') as f:
         for i2 in csv.DictReader(f):
-            print(i2)
             for i in range(len(index_of_pa)):
-                tmp_dict = dict()
-                tmp2_dict = dict()
-                tmp_dict[i2[index_of_conf]] = i2[index_of_pa[i]]
+                print(type(i2), type(index_of_pa), type(index_of_conf), type(i2[index_of_conf]))
+                print(i2, index_of_pa, index_of_conf, i2[index_of_conf])
+                print(index_of_pa[i],i2[index_of_conf],i2[index_of_pa[i]])
+
+                tmp_dict[index_of_pa[i]] = {i2[index_of_conf] : i2[index_of_pa[i]]}
+
                 print(tmp_dict)
-                tmp2_dict[index_of_pa[i]] = tmp_dict
-                dev_dict.update(tmp2_dict)
-                print(dev_dict)
 
 
-
+    print(dev_dict)
     return dev_dict
 
 
