@@ -23,22 +23,32 @@ def get_columns(arg1, arg2):
     return tpl_list
 
 
-def get_dictionary(path_of_csv, index_of_conf, index_of_pa):
+def get_dictionary(path_of_csv, index_of_conf, index_of_v):
     tmp_dict = dict()
     dev_dict = dict()
+    num = 0
+    global index_of_val
+
+    if type(index_of_v) is str:
+        index_of_val = [x.strip() for x in index_of_v.split(',')]
+    elif type(index_of_v) is list:
+        index_of_val = index_of_v
+
     with open(path_of_csv, 'r', encoding='utf-8_sig') as f:
-        for i2 in csv.DictReader(f):
-            for i in range(len(index_of_pa)):
-                print(type(i2), type(index_of_pa), type(index_of_conf), type(i2[index_of_conf]))
-                print(i2, index_of_pa, index_of_conf, i2[index_of_conf])
-                print(index_of_pa[i],i2[index_of_conf],i2[index_of_pa[i]])
+        for d1 in csv.DictReader(f):
+            num += 1
+            for i2 in range(len(index_of_val)):
+                tmp_dict[index_of_val[i2] + '__' + str(num)] = {d1[index_of_conf]: d1[index_of_val[i2]]}
 
-                tmp_dict[index_of_pa[i]] = {i2[index_of_conf] : i2[index_of_pa[i]]}
+    for i in range(len(index_of_val)):
+        list_of_v = []
 
-                print(tmp_dict)
+        for k, v in tmp_dict.items():
+            if index_of_val[i] in k:
+                list_of_v.append(v)
 
+        dev_dict[index_of_val[i]] = list_of_v
 
-    print(dev_dict)
     return dev_dict
 
 
@@ -51,14 +61,14 @@ def get_index(path_of_csv):
 
 
 def check_index(path_of_csv, index_of_hoge):
+    global list_of_hoge
     with open(path_of_csv, 'r', encoding='utf-8_sig') as f:
 
         index_of_index = csv.reader(f, delimiter=',')
         list_of_index = next(index_of_index)
 
         if type(index_of_hoge) is str:
-            index_of_hoge = index_of_hoge.replace(' ', '')
-            list_of_hoge = index_of_hoge.split(',')
+            list_of_hoge = [x.strip() for x in index_of_hoge.split(',')]
         elif type(index_of_hoge) is list:
             list_of_hoge = index_of_hoge
 

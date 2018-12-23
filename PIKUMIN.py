@@ -25,7 +25,6 @@ if strtobool(dict_of_ini['projects']['parasheeter']):
     dict_of_pa = pjcs.starter_pa(dict_of_ini)
     pjpa.starter(dict_of_ini)
 
-
     # if str.title(dict_of_ini['projects']['processer']) == 'True':
     #     pjpr.starter(dict_of_ini)
     #

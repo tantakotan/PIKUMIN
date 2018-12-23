@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import sys
 import os
 from projects.csvinstaller import csv_process
 from distutils.util import strtobool
+
 
 def starter_nw(dict_of_ini):
 
@@ -45,6 +45,7 @@ def starter_pa(dict_of_ini):
 
     csv_process.check_path(path_of_csv)
     csv_process.check_path(path_of_tpl)
+    csv_process.check_path(path_of_par)
 
     csv_process.check_index(path_of_csv, index_of_tpl)
     csv_process.check_index(path_of_csv, index_of_conf)

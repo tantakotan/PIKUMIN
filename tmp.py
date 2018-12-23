@@ -12,3 +12,7 @@ def get_dictionary(path_of_csv, index_of_conf, index_of_pa):
                 dev_dict.update(tmp2_dict)
                 print(dev_dict)
 
+
+    var = {index_of_pa[0]:{1:1}}
+    var = {index_of_pa[0]:{k:v for k,v in tmp_dict.items() if index_of_pa[0] in k}}
+    print(var)
