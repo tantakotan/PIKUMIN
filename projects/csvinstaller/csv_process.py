@@ -25,7 +25,7 @@ def get_columns(arg1, arg2):
 
 def get_dictionary(path_of_csv, index_of_conf, index_of_v):
     tmp_dict = dict()
-    dev_dict = dict()
+    dict_of_conv = dict()
     num = 0
     global index_of_val
 
@@ -34,22 +34,19 @@ def get_dictionary(path_of_csv, index_of_conf, index_of_v):
     elif type(index_of_v) is list:
         index_of_val = index_of_v
 
+    list_of_conv = [[0 for i in range(0)] for j in range(len(index_of_val))]
+
     with open(path_of_csv, 'r', encoding='utf-8_sig') as f:
         for d1 in csv.DictReader(f):
             num += 1
             for i2 in range(len(index_of_val)):
-                tmp_dict[index_of_val[i2] + '__' + str(num)] = {d1[index_of_conf]: d1[index_of_val[i2]]}
+                tmp_list = [d1[index_of_conf], d1[index_of_val[i2]]]
+                list_of_conv[i2].append(tmp_list)
 
-    for i in range(len(index_of_val)):
-        list_of_v = []
+    for i in range(len(list_of_conv)):
+        dict_of_conv[index_of_val[i]] = dict((list_of_conv[i]))
 
-        for k, v in tmp_dict.items():
-            if index_of_val[i] in k:
-                list_of_v.append(v)
-
-        dev_dict[index_of_val[i]] = list_of_v
-
-    return dev_dict
+    return dict_of_conv
 
 
 def get_index(path_of_csv):

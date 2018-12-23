@@ -5,13 +5,14 @@ from jinja2 import Environment
 import os
 
 
-def j2_render(text_of_template, dict_of_config):
+def j2_render(otp_of_tpl, dict_of_nw):
     env = Environment()
     env.trim_blocks = True
     env.lstrip_blocks = True
 
-    s = env.from_string(text_of_template)
-    s2 = s.render(dict_of_config)
+    s = env.from_string(otp_of_tpl)
+    s2 = s.render(dict_of_nw)
+
     return s2
 
 
