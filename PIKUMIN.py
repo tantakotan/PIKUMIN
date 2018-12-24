@@ -2,11 +2,11 @@
 
 import os
 from distutils.util import strtobool
-# from projects import main_parasheeter as pjpa
 # from projects import main_nwccc as pjpr
 from projects import starter_csv as pjcs
 from projects import starter_ini as pjin
 from projects import starter_nwccc as pjnw
+from projects import starter_parasheeter as pjps
 
 # path import
 path_of_ini, trashbox = os.path.splitext(__file__)
@@ -22,8 +22,8 @@ if strtobool(dict_of_ini['projects']['nwccc']):
     pjnw.starter_nwccc(path_of_tpl, list_of_tpl, dict_of_nw)
 
 if strtobool(dict_of_ini['projects']['parasheeter']):
-    dict_of_pa = pjcs.starter_pa(dict_of_ini)
-    pjpa.starter(dict_of_ini)
+    path_of_pslsx, list_of_pslsx, dict_of_ps = pjcs.starter_ps(dict_of_ini)
+    pjps.starter_parasheeter(path_of_pslsx, list_of_pslsx, dict_of_ps)
 
     # if str.title(dict_of_ini['projects']['processer']) == 'True':
     #     pjpr.starter(dict_of_ini)
