@@ -1,0 +1,10 @@
+﻿config,l2SwitchA,l2SwitchB,l2SwitchC
+a,a,0,A
+b,b,1,B
+c,c,2,C
+d,d,3,D
+e,e,4,E
+f,f,5,F
+g,g,6,G
+hostname,l2SwitchA,l2SwitchB,l2SwitchC
+netflix,AAA,BBB,CCC

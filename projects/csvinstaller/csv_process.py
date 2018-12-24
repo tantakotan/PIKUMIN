@@ -24,7 +24,6 @@ def get_columns(arg1, arg2):
 
 
 def get_dictionary(path_of_csv, index_of_conf, index_of_v):
-    tmp_dict = dict()
     dict_of_conv = dict()
     num = 0
     global index_of_val

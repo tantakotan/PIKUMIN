@@ -22,8 +22,8 @@ if strtobool(dict_of_ini['projects']['nwccc']):
     pjnw.starter_nwccc(path_of_tpl, list_of_tpl, dict_of_nw)
 
 if strtobool(dict_of_ini['projects']['parasheeter']):
-    path_of_pslsx, list_of_pslsx, dict_of_ps = pjcs.starter_ps(dict_of_ini)
-    pjps.starter_parasheeter(path_of_pslsx, list_of_pslsx, dict_of_ps)
+    path_of_ps, dict_of_ps, dict_of_nw = pjcs.starter_ps(dict_of_ini)
+    pjps.starter_parasheeter(path_of_ps, dict_of_ps, dict_of_nw)
 
     # if str.title(dict_of_ini['projects']['processer']) == 'True':
     #     pjpr.starter(dict_of_ini)
