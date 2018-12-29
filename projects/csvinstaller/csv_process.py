@@ -80,7 +80,7 @@ def check_index(path_of_csv, index_of_hoge):
             if len(count_index) < 2:
                 print('index count check...OK: ' + str(count_index))
             else:
-                print('index count check...NG: ' + list_of_hoge + ' is ' + str(count_index) + ' duplicated')
+                print('index count check...NG: ' + str(list_of_hoge) + ' is ' + str(count_index) + ' duplicated')
                 exit()
 
 
