@@ -70,10 +70,8 @@ def starter_ps(dict_of_ini):
 
     dict_of_nw = csv_process.get_dictionary(path_of_god, index_of_conf, index_of_nw)
 
-    print(path_of_ps)
-    print(dict_of_ps)
-    print(dict_of_nw)
-
-    exit()
+    # print(path_of_ps)
+    # print(dict_of_ps)
+    # print(dict_of_nw)
 
     return path_of_ps, dict_of_ps, dict_of_nw
