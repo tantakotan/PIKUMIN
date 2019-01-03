@@ -4,6 +4,46 @@ import os
 from projects.csvinstaller import csv_process
 from distutils.util import strtobool
 
+class preproccsv:
+
+    def __init__(self, dict_of_ini):
+        try:
+            path_of_god = os.path.join(dict_of_ini['god']['god_folder'], dict_of_ini['god']['god_file'])
+            path_of_tpl = os.path.join(dict_of_ini['tpl']['tpl_folder'], dict_of_ini['tpl']['tpl_file'])
+            index_of_tpl = dict_of_ini['tpl']['tpl_index']
+
+            index_of_nw = dict_of_ini['nw']['nw_index']
+            index_of_conf = dict_of_ini['nw']['config_index']
+            flag_of_nw = strtobool(dict_of_ini['nw']['nw_index_all'])
+
+            path_of_ps = os.path.join(dict_of_ini['ps']['ps_folder'], dict_of_ini['ps']['ps_file'])
+            index_of_ps = dict_of_ini['ps']['ps_index']
+            index_of_sh = dict_of_ini['ps']['ps_subindex']
+            flag_of_ps = strtobool(dict_of_ini['ps']['ps_index_all'])
+        except KeyError as er:
+            print('KeyNotFound: ', er)
+            pass
+        except ValueError as er:
+            print('ValueError: ', 'check your .ini parameter: ', '"*_index_all" can be used "True,yes,y,1 or None,no,n,0"')
+            exit()
+
+        if flag_of_nw:
+            try:
+                index_of_nw = csv_process.get_index(path_of_god)
+            except FileNotFoundError as er:
+                print('FileNotFoundError: ', er)
+                exit()
+
+            try:
+                index_of_nw.remove(index_of_conf)
+            except ValueError as er:
+                print('ValueError: ', 'check your ini parameter: "config_index"=', index_of_conf)
+                exit()
+
+
+
+
+
 
 def starter_nw(dict_of_ini):
 

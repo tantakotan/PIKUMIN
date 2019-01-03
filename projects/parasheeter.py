@@ -31,7 +31,7 @@ class starter_parasheeter:
 
         for i in list_of_key:
             to_wb.create_sheet(title = i)
-            to_ws = to_wb.get_sheet_by_name(i)
+            to_ws = to_wb[i]
 
             irow = 0
 
@@ -49,7 +49,13 @@ class starter_parasheeter:
                         to_cell = to_ws[x2.coordinate]
                         to_cell = to_ws.cell(row=to_cell.row + irow, column=column_index_from_string(to_cell.column))
                         to_cell.value = x2.value
-                        to_cell._style = copy(x2._style)
+                        if x2.has_style:
+                            to_cell.font = copy(x2.font)
+                            to_cell.border = copy(x2.border)
+                            to_cell.fill = copy(x2.fill)
+                            to_cell.alignment = copy(x2.alignment)
+                            to_cell.number_format = copy(x2.number_format)
+                            to_cell.protection = copy(x2.protection)
 
                 irow += xrow - nrow + 2
 
