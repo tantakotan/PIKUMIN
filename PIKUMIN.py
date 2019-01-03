@@ -1,46 +1,29 @@
 # -*- coding: utf-8 -*-
-#
-# import os
-# from distutils.util import strtobool
-# # from projects import main_nwccc as pjpr
-# from projects import starter_csv as pjcs
-# from projects import starter_ini as pjin
-# from projects import starter_nwccc as pjnw
-# from projects import starter_parasheeter as pjps
-#
 
-from projects import *
-import glob
-import os
 from ppp import ppp as ppp
 from ppp import ppm as ppm
 
 # starting ppp...
-ppp = ppp.PppExe(__file__)
+pppi = ppp.PppExe(__file__)
 
 # import ini path
-ppp.import_ini()
+pppi.import_ini()
 
 # import project list
-list_of_projects, path_of_project = ppp.import_projects()
-print(list_of_projects, path_of_project)
+list_of_projects, path_of_project = pppi.import_projects()
 
 # Start projcets
 for projectname in list_of_projects:
     ppme = ppm.PpmExe(projectname, path_of_project)
     path_of_ppini = ppme.import_ini()
-    dict_of_ini = ppp.exec_pppini(path_of_ppini)
 
+    pppc = ppp.PppCsv()
+    list_of_module, path_of_module, dict_of_parameter = pppc.get_module(path_of_ppini)
 
-
+    exit()
 
     # path_of_module, list_of_module, dict_of_module = ppp.exec_pppcsv(x)
     # eval(dict_of_projects[x])
-
-# install INI
-dict_of_ini = ppp.get_projects()
-
-
 
 # ppp.exec_pppini()
 # ppp.check_nwflag()

@@ -42,3 +42,40 @@ for i in range(len(index_of_val)):
     dev_dict['aaa'] = dict((tmp_list2[0][3], tmp_list2[0][4]))
     print(dev_dict)
 
+try:
+    path_of_csv = os.path.join(self.dict_of_ppini[S_GOD][I_GOD_FOLDER], self.dict_of_ppini[S_GOD][I_GOD_FILE])
+    path_of_modulefile = os.path.join(self.dict_of_ppini[S_TPL][I_TPL_FOLDER], self.dict_of_ppini[S_TPL][I_TPL_FILE])
+    index_of_module = self.dict_of_ppini[S_TPL][I_TPL_INDEX]
+
+    index_of_nw = self.dict_of_ppini[S_NW][I_NW_INDEX]
+    index_of_conf = self.dict_of_ppini[S_NW][I_NW_CONFIGINDEX]
+    flag_of_nw = strtobool(self.dict_of_ppini[S_NW][I_NW_INDEX_ALL])
+
+    path_of_ps = os.path.join(self.dict_of_ppini[S_PS][I_PS_FOLDER], self.dict_of_ppini[S_PS][I_PS_FILE])
+    index_of_ps = self.dict_of_ppini[S_PS][I_PS_INDEX]
+    index_of_sh = self.dict_of_ppini[S_PS][I_PS_SUBINDEX]
+    flag_of_ps = strtobool(self.dict_of_ppini[S_PS][I_PS_INDEX_ALL])
+except KeyError as er:
+    print('KeyNotFound: ', er)
+    pass
+except ValueError as er:
+    print('ValueError: ', 'check your .ini parameter: ', '"*_index_all" can be used "True,yes,y,1 or None,no,n,0"')
+    exit()
+
+if flag_of_nw:
+    try:
+        pppcsv = PppCsv()
+        index_of_nw = pppcsv.get_index(path_of_csv)
+    except FileNotFoundError as er:
+        print('FileNotFoundError: ', er)
+        exit()
+
+    try:
+        index_of_nw.remove(index_of_conf)
+    except ValueError as er:
+        print('ValueError: ', 'check your ini parameter: "config_index"=', index_of_conf)
+        exit()
+
+return
+
+
