@@ -1,43 +1,55 @@
 # -*- coding: utf-8 -*-
+#
+# import os
+# from distutils.util import strtobool
+# # from projects import main_nwccc as pjpr
+# from projects import starter_csv as pjcs
+# from projects import starter_ini as pjin
+# from projects import starter_nwccc as pjnw
+# from projects import starter_parasheeter as pjps
+#
 
-
+from projects import *
+import glob
 import os
-import sys
-sys.path.append('./module')
-import csv_process
 
-# argv check
-if len(sys.argv) == 2:
-    print("...引数入力OK")
-    print("..." + __file__ + " " + sys.argv[1])
-else:
-    print("引数入力NG")
-    print("example: python sample.py device_name")
-    exit()
+# import ini path
+path_of_ini, trashbox = os.path.splitext(__file__)
+path_of_ini = path_of_ini + '.ini'
 
-# argv import
-dev = sys.argv[1]
+# import project list
+list_of_allprojects = glob.glob('./projects/*.py')
 
-# path import
-csv_folder = './tpls'
-csv_file = 'sample.csv'
-csv_path = os.path.abspath(os.path.join(csv_folder, csv_file))
-tpl_path = os.path.abspath(csv_folder)
+# install INI
+ppp = ppp.PppExe(path_of_ini)
+list_of_projects, dict_of_ini = ppp.get_projects()
 
-# strings import
-tpl_csv_index = 'tpl'
-config_csv_index = 'config'
+print(list_of_projects)
+print(dict_of_ini)
 
-# path check
-if not os.path.exists(csv_path):
-    print('not found...CSV FILE:' + csv_path)
-    exit()
-elif not os.path.exists(tpl_path):
-    print('not found...TPL FOLDER:' + tpl_path)
-    exit()
+# Start projcets
+for x in list_of_projects:
+    path_of_module, list_of_module, dict_of_module = ppp.exec_pppcsv(x)
+    eval(dict_of_projects[x])
 
-tpl_list = csv_process.columns_of_index(csv_path, tpl_csv_index)
-cfg_list = csv_process.columns_of_index(csv_path, config_csv_index)
 
-print(tpl_list)
-print(cfg_list)
+# ppp.exec_pppini()
+# ppp.check_nwflag()
+
+#
+# # check PROJECTS
+# if ppp.check_nwflag():
+#     path_of_tpl, list_of_tpl, dict_of_nw = ppp.exec_pppcsvnw()
+#
+#
+#     pjnw.starter_nwccc(path_of_tpl, list_of_tpl, dict_of_nw)
+#
+# if strtobool(dict_of_ini['projects']['parasheeter']):
+#     path_of_ps, dict_of_ps, dict_of_nw = pjcs.starter_ps(dict_of_ini)
+#     ppp = pjps.starter_parasheeter(path_of_ps, dict_of_ps, dict_of_nw)
+#     ppp.get_template()
+#
+#
+#     # if str.title(dict_of_ini['projects']['processer']) == 'True':
+#     #     pjpr.starter(dict_of_ini)
+#     #
