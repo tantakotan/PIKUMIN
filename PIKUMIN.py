@@ -12,25 +12,34 @@
 from projects import *
 import glob
 import os
+from ppp import ppp as ppp
+from ppp import ppm as ppm
+
+# starting ppp...
+ppp = ppp.PppExe(__file__)
 
 # import ini path
-path_of_ini, trashbox = os.path.splitext(__file__)
-path_of_ini = path_of_ini + '.ini'
+ppp.import_ini()
 
 # import project list
-list_of_allprojects = glob.glob('./projects/*.py')
-
-# install INI
-ppp = ppp.PppExe(path_of_ini)
-list_of_projects, dict_of_ini = ppp.get_projects()
-
-print(list_of_projects)
-print(dict_of_ini)
+list_of_projects, path_of_project = ppp.import_projects()
+print(list_of_projects, path_of_project)
 
 # Start projcets
-for x in list_of_projects:
-    path_of_module, list_of_module, dict_of_module = ppp.exec_pppcsv(x)
-    eval(dict_of_projects[x])
+for projectname in list_of_projects:
+    ppme = ppm.PpmExe(projectname, path_of_project)
+    path_of_ppini = ppme.import_ini()
+    dict_of_ini = ppp.exec_pppini(path_of_ppini)
+
+
+
+
+    # path_of_module, list_of_module, dict_of_module = ppp.exec_pppcsv(x)
+    # eval(dict_of_projects[x])
+
+# install INI
+dict_of_ini = ppp.get_projects()
+
 
 
 # ppp.exec_pppini()

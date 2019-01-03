@@ -6,6 +6,7 @@ import configparser
 from distutils.util import strtobool
 import os
 import csv
+import glob
 
 S_ = 'section: '
 S_PROJECTS = 'projects'
@@ -51,13 +52,33 @@ flag_of_ps = False
 
 class PppExe:
 
-    dict_of_ini = {}
+    path_of_exe = ''
+    path_of_exedir = ''
     path_of_ini = ''
+    path_of_projects = ''
+    dict_of_ini = {}
+    list_of_projects = []
 
-    def __init__(self, path_of_ini):
+    def __init__(self, path_of_exe):
         print('Starting... PPP')
+        self.path_of_exe = path_of_exe
+        self.path_of_exedir = os.path.dirname(path_of_exe)
 
-        self.path_of_ini = path_of_ini
+    def import_ini(self):
+        path_of_ini, trashbox = os.path.splitext(self.path_of_exe)
+        self.path_of_ini = path_of_ini + '.ini'
+
+    def import_projects(self):
+        self.path_of_project = self.path_of_exedir + '/projects/'
+        list_of_ap = glob.glob(self.path_of_project + '*.py')
+
+        for x in list_of_ap:
+            x = os.path.basename(x)
+            i = x.split('.')[0]
+            if i != '__init__':
+                self.list_of_projects.append(i)
+
+        return self.list_of_projects, self.path_of_project
 
     def get_projects(self):
         pppini = PppIni(self.path_of_ini)
