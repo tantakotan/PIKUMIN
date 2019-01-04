@@ -7,7 +7,7 @@ from ppp import ppm as ppm
 pppi = ppp.PppExe(__file__)
 
 # import ini path
-pppi.import_ini()
+pppi.import_pini()
 
 # import project list
 list_of_projects, path_of_project = pppi.import_projects()
@@ -15,12 +15,13 @@ list_of_projects, path_of_project = pppi.import_projects()
 # Start projcets
 for projectname in list_of_projects:
     ppme = ppm.PpmExe(projectname, path_of_project)
-    path_of_ppini = ppme.import_ini()
+    path_of_ppini = ppme.import_ppini()
 
     pppc = ppp.PppCsv()
     list_of_module, path_of_module, dict_of_parameter = pppc.get_module(path_of_ppini)
+    pppc.eof()
 
-    exit()
+    ppme.start_project(list_of_module, path_of_module, dict_of_parameter)
 
     # path_of_module, list_of_module, dict_of_module = ppp.exec_pppcsv(x)
     # eval(dict_of_projects[x])

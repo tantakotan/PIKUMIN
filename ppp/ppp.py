@@ -22,7 +22,7 @@ class PppExe:
         self.path_of_exedir = os.path.dirname(path_of_exe)
         self.path_of_project = ''
 
-    def import_ini(self):
+    def import_pini(self):
         path_of_ini, trashbox = os.path.splitext(self.path_of_exe)
         self.path_of_ini = path_of_ini + '.ini'
 
@@ -42,10 +42,15 @@ class PppExe:
 class PppCsv:
 
     MODULE = 'module'
+    MODULE_TYPE = 'module_type'
+    MODULE_TEXT = 'module_text'
+    MODULE_XLSX = 'module_xlsx'
     MODULE_DIRECTORY = 'module_directory'
     MODULE_LIST = 'module_list'
     MODULE_INDEX = 'module_index'
-    CSV = 'csv'
+    MODULE_INDEX_ALL = 'module_index_all'
+    MODULE_SUFFIX = 'module_suffix'
+    PARAMETER = 'parameter'
     CSV_DIRECTORY = 'csv_directory'
     CSV_FILE = 'csv_file'
     KEY = 'key'
@@ -55,7 +60,7 @@ class PppCsv:
 
     path_of_moduledir = ''
     index_of_module = ''
-    path_of_modulefile = ''
+    path_of_modulelist = ''
 
     def __init__(self):
         self.path_of_ppini = ''
@@ -72,30 +77,85 @@ class PppCsv:
         self.path_of_csv = ''
         self.index_of_item = ''
         self.index_of_items = []
+        self.type_of_module = ''
+        self.index_of_suffix = ''
+        self.flag_of_module = False
 
-    def import_module(self):
-        self.dict_of_module = self.dict_of_ppini[self.MODULE]
+    def import_module_type(self):
+        self.type_of_module = self.dict_of_ppini[self.MODULE_TYPE][self.MODULE_TYPE]
+
+    def import_module_text(self):
+        self.dict_of_module = self.dict_of_ppini[self.MODULE_TEXT]
         self.path_of_moduledir = self.dict_of_module[self.MODULE_DIRECTORY]
+        self.path_of_modulelist = self.dict_of_module[self.MODULE_LIST]
         self.index_of_module = self.dict_of_module[self.MODULE_INDEX]
-        self.path_of_modulefile = self.dict_of_module[self.MODULE_LIST]
 
-        self.path_of_modulefile = os.path.join(self.path_of_moduledir, self.path_of_modulefile)
+        self.path_of_modulelist = os.path.join(self.path_of_moduledir, self.path_of_modulelist)
 
-    def import_modulelist(self):
+    def import_module_xlsx(self):
+        self.dict_of_module = self.dict_of_ppini[self.MODULE_XLSX]
+        self.path_of_moduledir = self.dict_of_module[self.MODULE_DIRECTORY]
+        self.path_of_modulelist = self.dict_of_module[self.MODULE_LIST]
+        self.index_of_module = self.dict_of_module[self.MODULE_INDEX]
+        self.index_of_suffix = self.dict_of_module[self.MODULE_SUFFIX]
 
-        with open(self.path_of_modulefile, 'r', encoding='utf-8_sig') as f:
+        self.path_of_modulelist = os.path.join(self.path_of_moduledir, self.path_of_modulelist)
+        self.flag_of_module = strtobool(self.dict_of_module[self.MODULE_INDEX_ALL])
+
+    def import_module_list(self):
+
+        with open(self.path_of_modulelist, 'r', encoding='utf-8_sig') as f:
             module = csv.reader(f, delimiter=',')
             list_of_index = next(module)
             count_of_index = [i for i, x in enumerate(list_of_index) if x == self.index_of_module]
 
             if len(count_of_index) >= 2:
-                print(self.index_of_key + ' is ' + str(count_of_index) + ' count from ' + self.path_of_modulefile)
+                print(self.index_of_key + ' is ' + str(count_of_index) + ' count from ' + self.path_of_modulelist)
                 exit()
 
             self.list_of_module = [x[0] for x in module if x[count_of_index[0]]]
 
+        print(self.list_of_module)
+        # TYPE:TPL = ['1.tpl', '2.tpl', '3.tpl']
+        # TYPE:XLSX = {'common2': {'sample3_1': '3.xlsx', 'sample3_2': '3.xlsx'}}
+
+    def import_module_dict(self):
+
+        list_of_xlsxpair = []
+        dict_of_ps = {}
+
+        # seirisimasyo....
+        if self.flag_of_module:
+            list_of_index = get_index(self.path_of_modulelist)
+            print(list_of_index)
+
+            for x in list_of_index:
+                list_of_ppp = [[i, x] for i in list_of_index if x + self.index_of_suffix in i]
+                list_of_xlsxpair.extend(list_of_ppp)
+
+            print(list_of_xlsxpair)
+
+        else:
+            list_of_index = [self.index_of_module.strip() for self.index_of_module in self.index_of_module.split(',')]
+
+            for x in list_of_index:
+                list_of_xlsxpair.append([x + self.index_of_suffix, x])
+                print(list_of_xlsxpair)
+
+            print(list_of_xlsxpair)
+
+        for i in list_of_xlsxpair:
+            dict_of_temp = get_dictionary(self.path_of_modulelist, i[0], i[1])
+            dict_of_ps.update(dict_of_temp)
+
+        self.list_of_module = {}
+
+        for i in dict_of_ps:
+            list_of_pslsx = [[v, k] for k, v in dict_of_ps[i].items()]
+            self.list_of_module[i] = list_of_pslsx
+
     def import_csv(self):
-        self.dict_of_csv = self.dict_of_ppini[self.CSV]
+        self.dict_of_csv = self.dict_of_ppini[self.PARAMETER]
         self.path_of_csvdir = self.dict_of_csv[self.CSV_DIRECTORY]
         self.path_of_csvfile = self.dict_of_csv[self.CSV_FILE]
         self.index_of_key = self.dict_of_csv[self.KEY_INDEX]
@@ -106,7 +166,7 @@ class PppCsv:
 
         if self.flag_of_itemsall:
             try:
-                self.get_index(self.path_of_csv)
+                self.index_of_items = get_index(self.path_of_csv)
 
             except FileNotFoundError as er:
                 print('FileNotFoundError: ', er)
@@ -138,17 +198,22 @@ class PppCsv:
     def get_module(self, path_of_ppini):
         self.path_of_ppini = path_of_ppini
         self.get_ppini()
-        self.import_module()
-        self.import_modulelist()
+        self.import_module_type()
+
+        print(self.type_of_module)
+        if self.type_of_module in 'text':
+            self.import_module_text()
+            self.import_module_list()
+        elif self.type_of_module in 'xlsx':
+            self.import_module_xlsx()
+            self.import_module_dict()
+
         self.import_csv()
         self.import_csvdictionary()
 
-        return self.list_of_module, self.path_of_moduledir, self.dict_of_module
-
-    def get_index(self, path_of_god):
-        with open(path_of_god, 'r', encoding='utf-8_sig') as f:
-            index_of_index = csv.reader(f, delimiter=',')
-            self.index_of_items = next(index_of_index)
+        # print(self.list_of_module, self.path_of_moduledir, self.dict_of_module)
+        # exit()
+        return self.list_of_module, self.path_of_moduledir, self.dict_of_parameter
 
     def get_ppini(self):
         cp = configparser.ConfigParser()
@@ -157,3 +222,39 @@ class PppCsv:
 
         for i in list_of_inisections:
             self.dict_of_ppini[i] = dict(cp.items(i))
+
+    def eof(self):
+        print('Successfuly... PPP', self.flag_of_module)
+
+
+def get_index(path_of_god):
+    with open(path_of_god, 'r', encoding='utf-8_sig') as f:
+        index_of_index = csv.reader(f, delimiter=',')
+        index_of_items = next(index_of_index)
+
+    return index_of_items
+
+
+def get_dictionary(path_of_csv, index_of_conf, index_of_v):
+    dict_of_conv = dict()
+    num = 0
+    index_of_val = []
+
+    if type(index_of_v) is str:
+        index_of_val = [x.strip() for x in index_of_v.split(',')]
+    elif type(index_of_v) is list:
+        index_of_val = index_of_v
+
+    list_of_conv = [[] for i in range(len(index_of_val)) if i is i]
+
+    with open(path_of_csv, 'r', encoding='utf-8_sig') as f:
+        for d1 in csv.DictReader(f):
+            num += 1
+            for i2 in range(len(index_of_val)):
+                tmp_list = [d1[index_of_conf], d1[index_of_val[i2]]]
+                list_of_conv[i2].append(tmp_list)
+
+    for i in range(len(list_of_conv)):
+        dict_of_conv[index_of_val[i]] = dict((list_of_conv[i]))
+
+    return dict_of_conv
