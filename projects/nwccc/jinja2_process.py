@@ -5,38 +5,50 @@ from jinja2 import Environment
 import os
 
 
-def j2_render(otp_of_tpl, dict_of_nw):
-    env = Environment()
-    env.trim_blocks = True
-    env.lstrip_blocks = True
+class J2Render:
+    def __init__(self, dict_of_parameter):
+        self.dict_of_parameter = dict_of_parameter
+        self.key_of_templatestring = ''
+        self.dict_of_parameter_host = {}
+        self.text_of_j2 = ''
+        self.path_of_module = ''
 
-    s = env.from_string(otp_of_tpl)
-    s2 = s.render(dict_of_nw)
+    def create_file(self, key_of_parameter):
 
-    return s2
+        s = datetime.now()
+        s2 = key_of_parameter + '_' + s.strftime('%Y%m%d') + '.conf'
+        s3 = os.path.join(self.path_of_module, s2)
 
+        with open(s3, mode='w') as f:
+            f.write(self.text_of_j2)
 
-def create_file(j2_temp, directory_path, file_name):
-    directory_path = os.path.dirname(directory_path)
+        print('create file successfuly...: ' + s3)
 
-    s = datetime.now()
-    s2 = file_name + '_' + s.strftime('%Y%m%d') + '.conf'
-    s3 = os.path.join(directory_path, s2)
+    def create_outputdir(self, path_of_module):
+        self.path_of_module = os.path.join(os.path.dirname(path_of_module), 'output', self.key_of_templatestring)
+        os.makedirs(self.path_of_module, exist_ok=True)
 
-    with open(s3, mode='w') as f:
-        f.write(j2_temp)
+    def create_template_key(self):
+        self.key_of_templatestring = list(self.dict_of_parameter.keys())[0]
 
-    print('create file successfuly...: ' + s3)
+    def create_parameter_host(self, key_of_parameter):
+        self.dict_of_parameter_host = dict(self.dict_of_parameter[key_of_parameter])
 
+    def create_template(self, template_string):
 
-def create_template(template_string, directory_path, file_name):
-    directory_path = os.path.dirname(directory_path)
+        s = datetime.now()
+        s2 = self.key_of_templatestring + '_template_' + s.strftime('%Y%m%d') + '.conf'
+        s3 = os.path.join(self.path_of_module, s2)
 
-    s = datetime.now()
-    s2 = file_name + '_template_' + s.strftime('%Y%m%d') + '.conf'
-    s3 = os.path.join(directory_path, s2)
+        with open(s3, mode='w') as f:
+            f.write(template_string)
 
-    with open(s3, mode='w') as f:
-        f.write(template_string)
+        print('create template successfuly...: ' + s3)
 
-    print('create template successfuly...: ' + s3)
+    def j2_render(self, text_of_tpl):
+        env = Environment()
+        env.trim_blocks = True
+        env.lstrip_blocks = True
+
+        s = env.from_string(text_of_tpl)
+        self.text_of_j2 = s.render(self.dict_of_parameter_host)

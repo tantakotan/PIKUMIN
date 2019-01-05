@@ -3,31 +3,35 @@
 import os
 
 
-def bond_tpl(path_of_tpl, list_of_tpl):
-    x = ''
-    path_of_tpl = os.path.dirname(path_of_tpl)
+class ExecTpl:
 
-    for i in list_of_tpl:
-        f = open(os.path.join(path_of_tpl, i))
-        x += f.read() + '\n'
+    def __init__(self, list_of_tpl, path_of_tpl):
+        self.x = ''
+        self.path_of_tpl = path_of_tpl
+        self.list_of_tpl = list_of_tpl
 
-    return x
+    def bond_tpl(self):
 
+        for i in self.list_of_tpl:
+            f = open(os.path.join(self.path_of_tpl, i))
+            self.x += f.read() + '\n'
 
-def check_file(path_of_tpl, tpl_list):
-    path_of_tpl = os.path.dirname(path_of_tpl)
-    b = os.path.isdir(path_of_tpl)
+        return self.x
 
-    if b:
-        print('directory check...OK: ' + path_of_tpl)
-    else:
-        print('directory check...NG: ' + path_of_tpl)
-        exit()
+    def check_file(self):
+        b = os.path.isdir(self.path_of_tpl)
 
-    for i in tpl_list:
-        b = os.path.isfile(os.path.join(path_of_tpl, i))
         if b:
-            print('file check...OK: ' + i)
+            print('directory check...OK: ' + self.path_of_tpl)
         else:
-            print('file check...NG: ' + i)
+            print('directory check...NG: ' + self.path_of_tpl)
             exit()
+
+        for i in self.list_of_tpl:
+            b = os.path.isfile(os.path.join(self.path_of_tpl, i))
+
+            if b:
+                print('file check...OK: ' + i)
+            else:
+                print('file check...NG: ' + i)
+                exit()

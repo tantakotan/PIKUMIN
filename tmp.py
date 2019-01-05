@@ -77,5 +77,3 @@ if flag_of_nw:
         exit()
 
 return
-
-

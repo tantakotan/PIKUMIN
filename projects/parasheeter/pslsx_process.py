@@ -2,116 +2,74 @@
 
 import os
 import openpyxl
-import re
-
-def get_template(path_of_ps, dict_of_ps):
-    path_of_pslsx = os.path.dirname(path_of_ps)
-
-    list_of_sheet = list(dict_of_ps.keys())
-    list_of_wbnsh = []
-
-    # common と common_sheet の関連性の識別に前方一致 + '_' を暫定的に用いているが…
-    for i in range(len(list_of_sheet)):
-        exc = list_of_sheet[i] + '[^0-9A-Za-z]+|' + list_of_sheet[i] + '$'
-        i2 = [i2 for i2, x in enumerate(list_of_sheet) if re.match(exc, x)]
-
-        if len(i2) == 2:
-            list_of_wbnsh.append(i2)
-            print(list_of_wbnsh)
+from copy import copy
+from openpyxl.utils import column_index_from_string
 
 
-    print(list_of_wbnsh)
-    print(list_of_wbnsh[0])
-    print(list_of_wbnsh[1])
+class ExecPslsx:
 
-    unko = []
-    unko2 = []
+    def __init__(self, dict_of_module, path_of_module, dict_of_parameter, dict_of_option):
+        self.dict_of_module = dict_of_module
+        self.path_of_module = path_of_module
+        self.dict_of_parameter = dict_of_parameter
+        self.dict_of_option = dict_of_option
 
-    for i in range(len(list_of_wbnsh)):
-        print('28: ' + str(list_of_wbnsh[i]))
-        for i2 in range(len(list_of_wbnsh[i])):
-            print('30: ' + str(list_of_wbnsh[i][i2]))
-            print('31: ' + str(list_of_sheet[list_of_wbnsh[i][i2]]))
-            print('32: ' + str(dict_of_ps[list_of_sheet[list_of_wbnsh[i][i2]]]))
-            for i3 in dict_of_ps[list_of_sheet[list_of_wbnsh[i][i2]]]:
-                print('35: ' + str(dict_of_ps[list_of_sheet[list_of_wbnsh[i][i2]]][i3]))
-                unko.extend(dict_of_ps[list_of_sheet[list_of_wbnsh[i][i2]]][i3])
+        self.list_of_keys = []
+        self.path_of_outputdir = ''
+        self.key_of_templatestr = ''
 
-    for i in dict_of_ps:
-        print(i)
-        
+        self.num_of_space = int(self.dict_of_option['option_rowspace'])
 
-    exit()
+    def get_outputpath(self):
+        self.key_of_templatestr = list(self.dict_of_parameter.keys())[0]
+        self.path_of_outputdir = os.path.join(os.path.dirname(self.path_of_module), 'output', self.key_of_templatestr)
+        os.makedirs(self.path_of_outputdir, exist_ok=True)
 
-    print(list_of_wbnsh)
-    print(list_of_wbnsh[0][0])
-    print(list_of_wbnsh[0][1])
-    print(list_of_wbnsh[1][0])
-    print(list_of_wbnsh[1][1])
+    def get_keys(self):
+        self.list_of_keys = list(self.dict_of_module.keys())
 
-    print(list_of_sheet[list_of_wbnsh[0][0]])
-    print(list_of_sheet[list_of_wbnsh[0][1]])
-    print(list_of_sheet[list_of_wbnsh[1][0]])
-    print(list_of_sheet[list_of_wbnsh[1][1]])
+    def get_spacerow(self):
+        self.num_of_space = 0
 
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[0][0]]])
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[0][1]]])
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[1][0]]])
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[1][1]]])
+    def get_template(self):
 
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[0][0]]]['1'])
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[0][1]]]['1'])
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[0][0]]]['2'])
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[0][1]]]['2'])
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[0][0]]]['3'])
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[0][1]]]['3'])
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[0][0]]]['4'])
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[0][1]]]['4'])
+        to_wb = openpyxl.Workbook()
 
+        for listkey in self.list_of_keys:
+            to_wb.create_sheet(title=listkey)
+            to_ws = to_wb[listkey]
 
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[1][0]]]['1'])
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[1][1]]]['1'])
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[1][0]]]['2'])
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[1][1]]]['2'])
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[1][0]]]['3'])
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[1][1]]]['3'])
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[1][0]]]['4'])
-    print(dict_of_ps[list_of_sheet[list_of_wbnsh[1][1]]]['4'])
+            position_row = 0
 
+            for i2 in self.dict_of_module[listkey]:
 
+                path_of_wb = os.path.join(self.path_of_module, i2[0])
+                wb = openpyxl.load_workbook(path_of_wb)
+                ws = wb[i2[1]]
 
-    exit()
+                nrow = ws.min_row
+                xrow = ws.max_row
 
-# def bond_tpl(path_of_tpl, list_of_tpl):
-#     x = ''
-#     path_of_tpl = os.path.dirname(path_of_tpl)
-#
-#     for i in list_of_tpl:
-#         f = open(os.path.join(path_of_tpl, i))
-#         x += f.read() + '\n'
-#
-#     return x
-#
-#
+                for key, x in enumerate(ws.rows):
 
-def check_pslsx(path_of_ps, dict_of_ps):
-    path_of_pslsx = os.path.dirname((path_of_ps))
+                    for ind, source_cell in enumerate(x):
+                        dest_cell = to_ws[source_cell.coordinate]
 
+                        num_of_row = dest_cell.row + position_row
+                        num_of_column = column_index_from_string(dest_cell.column)
 
-    # try:
-    #     print('directory check...OK: ' + path_of_pslsx)
-    #     exit()
-    # except UnicodeError:
-    #     exit
+                        dest_cell = to_ws.cell(row=num_of_row, column=num_of_column)
+                        dest_cell.value = source_cell.value
 
-    # else:
-    #     print('directory check...NG: ' + path_of_tpl)
-    #     exit()
-    #
-    # for i in tpl_list:
-    #     b = os.path.isfile(os.path.join(path_of_tpl, i))
-    #     if b:
-    #         print('file check...OK: ' + i)
-    #     else:
-    #         print('file check...NG: ' + i)
-    #         exit()
+                        if source_cell.has_style:
+                            dest_cell.font = copy(source_cell.font)
+                            dest_cell.border = copy(source_cell.border)
+                            dest_cell.fill = copy(source_cell.fill)
+                            dest_cell.alignment = copy(source_cell.alignment)
+                            dest_cell.number_format = copy(source_cell.number_format)
+                            dest_cell.protection = copy(source_cell.protection)
+
+                position_row += xrow - nrow + 1 + self.num_of_space
+
+        to_wb.remove_sheet(to_wb.get_sheet_by_name('Sheet'))
+        to_wb.save(os.path.join(self.path_of_outputdir, self.key_of_templatestr + '.xlsx'))

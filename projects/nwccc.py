@@ -11,30 +11,27 @@ class Nwccc:
     dict_of_parameter = {}
 
     def __init__(self, list_of_module, path_of_module, dict_of_parameter):
-        self.list_of_modul = list_of_module
+        self.list_of_module = list_of_module
         self.path_of_module = path_of_module
         self.dict_of_parameter = dict_of_parameter
-        print('Hello World')
 
 
+class ExecPykumin:
 
-class exec_pykumin():
+    def __init__(self, list_of_module, path_of_module, dict_of_parameter, dict_of_option):
 
-    def __init__(self):
-        print('OKPK!!!')
+        exectpl = tpl_process.ExecTpl(list_of_module, path_of_module)
+        exectpl.check_file()
+        text_of_tpl = exectpl.bond_tpl()
 
-    def starter_nwccc(self):
-        tpl_process.check_file(path_of_tpl, list_of_tpl)
-        otp_of_tpl = tpl_process.bond_tpl(path_of_tpl, list_of_tpl)
+        j2render = jinja2_process.J2Render(dict_of_parameter)
+        j2render.create_template_key()
+        j2render.create_outputdir(path_of_module)
+        j2render.create_template(text_of_tpl)
 
-        str_of_nw = list(dict_of_conv.keys())[0]
+        for key_of_parameter in dict_of_parameter:
+            j2render.create_parameter_host(key_of_parameter)
+            j2render.j2_render(text_of_tpl)
+            j2render.create_file(key_of_parameter)
 
-        jinja2_process.create_template(otp_of_tpl, path_of_tpl, str_of_nw)
-
-        for host_of_nw in dict_of_conv:
-
-            dict_of_nw = dict(dict_of_conv[host_of_nw])
-            otp_of_j2 = jinja2_process.j2_render(otp_of_tpl, dict_of_nw)
-            jinja2_process.create_file(otp_of_j2, path_of_tpl, host_of_nw)
-
-        exit()
+        self.dict_of_option = dict_of_option
