@@ -3,7 +3,7 @@
 import os
 import openpyxl
 from copy import copy
-from openpyxl.utils import column_index_from_string
+from openpyxl.utils import column_index_from_string, get_column_letter
 
 
 class ExecPslsx:
@@ -33,32 +33,47 @@ class ExecPslsx:
 
     def get_template(self):
 
-        to_wb = openpyxl.Workbook()
+        dest_wb = openpyxl.Workbook()
 
         for listkey in self.list_of_keys:
-            to_wb.create_sheet(title=listkey)
-            to_ws = to_wb[listkey]
+            dest_wb.create_sheet(title=listkey)
+            dest_ws = dest_wb[listkey]
 
             position_row = 0
 
             for i2 in self.dict_of_module[listkey]:
 
                 path_of_wb = os.path.join(self.path_of_module, i2[0])
-                wb = openpyxl.load_workbook(path_of_wb)
-                ws = wb[i2[1]]
+                source_wb = openpyxl.load_workbook(path_of_wb)
+                source_ws = source_wb[i2[1]]
 
-                nrow = ws.min_row
-                xrow = ws.max_row
+                nrow = source_ws.min_row
+                xrow = source_ws.max_row
 
-                for key, x in enumerate(ws.rows):
+                for i in range(nrow, xrow + 1):
+                    source_row = source_ws.row_dimensions[i]
+                    if source_row.height:
+                        dest_row = dest_ws.row_dimensions[i + position_row]
+                        dest_row.height = source_row.height
+
+                ncol = source_ws.min_column
+                xcol = source_ws.max_column
+
+                for i in range(ncol, xcol + 1):
+                    source_col = source_ws.column_dimensions[get_column_letter(i)]
+                    if source_col.width:
+                        dest_col = dest_ws.column_dimensions[get_column_letter(i)]
+                        dest_col.width = source_col.width
+
+                for key, x in enumerate(source_ws.rows):
 
                     for ind, source_cell in enumerate(x):
-                        dest_cell = to_ws[source_cell.coordinate]
+                        dest_cell = dest_ws[source_cell.coordinate]
 
                         num_of_row = dest_cell.row + position_row
                         num_of_column = column_index_from_string(dest_cell.column)
 
-                        dest_cell = to_ws.cell(row=num_of_row, column=num_of_column)
+                        dest_cell = dest_ws.cell(row=num_of_row, column=num_of_column)
                         dest_cell.value = source_cell.value
 
                         if source_cell.has_style:
@@ -71,5 +86,5 @@ class ExecPslsx:
 
                 position_row += xrow - nrow + 1 + self.num_of_space
 
-        to_wb.remove_sheet(to_wb.get_sheet_by_name('Sheet'))
-        to_wb.save(os.path.join(self.path_of_outputdir, self.key_of_templatestr + '.xlsx'))
+        dest_wb.remove_sheet(dest_wb.get_sheet_by_name('Sheet'))
+        dest_wb.save(os.path.join(self.path_of_outputdir, self.key_of_templatestr + '.xlsx'))
