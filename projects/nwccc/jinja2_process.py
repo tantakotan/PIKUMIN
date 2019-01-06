@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-from jinja2 import Environment
+from jinja2 import Environment, Template
 import os
-
+from openpyxl import load_workbook
+import copy
 
 class J2Render:
     def __init__(self, dict_of_parameter):
@@ -12,6 +13,7 @@ class J2Render:
         self.dict_of_parameter_host = {}
         self.text_of_j2 = ''
         self.path_of_module = ''
+        self.render_wb = ''
 
     def create_file(self, key_of_parameter):
 
@@ -21,6 +23,16 @@ class J2Render:
 
         with open(s3, mode='w') as f:
             f.write(self.text_of_j2)
+
+        print('create file successfuly...: ' + s3)
+
+    def create_file_xlsx(self, key_of_parameter):
+
+        s = datetime.now()
+        s2 = key_of_parameter + '_' + s.strftime('%Y%m%d') + '.xlsx'
+        s3 = os.path.join(self.path_of_module, s2)
+
+        self.render_wb.save(s3)
 
         print('create file successfuly...: ' + s3)
 
@@ -52,3 +64,15 @@ class J2Render:
 
         s = env.from_string(text_of_tpl)
         self.text_of_j2 = s.render(self.dict_of_parameter_host)
+
+    def j2_render_xlsx(self, path_of_tplxlsx):
+        env = Environment()
+        env.trim_blocks = True
+        env.lstrip_blocks = True
+
+        self.render_wb = load_workbook(path_of_tplxlsx)
+        for render_ws in self.render_wb.worksheets:
+            for index, render_ws_row in enumerate(render_ws.iter_rows()):
+                string_cells = list(cell for cell in render_ws_row if cell.value and isinstance(cell.value, str))
+                for cell in string_cells:
+                    cell.value = Template(cell.value).render(self.dict_of_parameter_host)

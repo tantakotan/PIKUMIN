@@ -17,6 +17,7 @@ class ExecPslsx:
         self.list_of_keys = []
         self.path_of_outputdir = ''
         self.key_of_templatestr = ''
+        self.path_of_tplxlsx = ''
 
         self.num_of_space = int(self.dict_of_option['option_rowspace'])
 
@@ -28,8 +29,8 @@ class ExecPslsx:
     def get_keys(self):
         self.list_of_keys = list(self.dict_of_module.keys())
 
-    def get_spacerow(self):
-        self.num_of_space = 0
+    def get_spacerow(self, num_of_space):
+        self.num_of_space = num_of_space
 
     def get_template(self):
 
@@ -87,4 +88,8 @@ class ExecPslsx:
                 position_row += xrow - nrow + 1 + self.num_of_space
 
         dest_wb.remove_sheet(dest_wb.get_sheet_by_name('Sheet'))
-        dest_wb.save(os.path.join(self.path_of_outputdir, self.key_of_templatestr + '.xlsx'))
+        self.path_of_tplxlsx = os.path.join(self.path_of_outputdir, 'template' + '.xlsx')
+        dest_wb.save(self.path_of_tplxlsx)
+
+    def return_tplpath(self):
+        return self.path_of_tplxlsx
