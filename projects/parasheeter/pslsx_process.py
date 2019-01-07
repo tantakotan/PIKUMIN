@@ -100,14 +100,12 @@ class ExecPslsx:
         return self.path_of_tplxlsx
 
     def coloring_cells(self, list_of_files):
-        print(list_of_files)
         for filepath in list_of_files:
             wb = openpyxl.load_workbook(filepath)
             for ws in wb.worksheets:
                 for index, ws_row in enumerate(ws.iter_rows()):
                     cells = list(cell for cell in ws_row if cell.value and isinstance(cell.value, str))
                     for cell in cells:
-                        print(cell.value, cell)
                         if cell.value in 'ケーブルガイド':
                             cell.font = openpyxl.styles.fonts.Font(color='FFFFFF')
                             cell.fill = openpyxl.styles.PatternFill(patternType='solid', start_color='000000', end_color='000000')
