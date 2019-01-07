@@ -4,7 +4,7 @@ from datetime import datetime
 from jinja2 import Environment, Template
 import os
 from openpyxl import load_workbook
-import copy
+
 
 class J2Render:
     def __init__(self, dict_of_parameter):

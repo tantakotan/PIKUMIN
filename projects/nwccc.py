@@ -4,18 +4,6 @@ from projects.nwccc import tpl_process
 from projects.nwccc import jinja2_process
 
 
-class Nwccc:
-
-    list_of_module = []
-    path_of_module = ''
-    dict_of_parameter = {}
-
-    def __init__(self, list_of_module, path_of_module, dict_of_parameter):
-        self.list_of_module = list_of_module
-        self.path_of_module = path_of_module
-        self.dict_of_parameter = dict_of_parameter
-
-
 class ExecPykumin:
 
     def __init__(self, list_of_module, path_of_module, dict_of_parameter, dict_of_option):

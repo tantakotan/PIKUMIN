@@ -4,7 +4,7 @@ import os
 import openpyxl
 from copy import copy
 from openpyxl.utils import column_index_from_string, get_column_letter
-
+from datetime import datetime
 
 class ExecPslsx:
 
@@ -36,6 +36,7 @@ class ExecPslsx:
 
         dest_wb = openpyxl.Workbook()
 
+        # seirisimasyo...
         for listkey in self.list_of_keys:
             dest_wb.create_sheet(title=listkey)
             dest_ws = dest_wb[listkey]
@@ -87,8 +88,11 @@ class ExecPslsx:
 
                 position_row += xrow - nrow + 1 + self.num_of_space
 
+        time_suffix = datetime.now()
+        file_name = self.key_of_templatestr + '_template_' + time_suffix.strftime('%Y%m%d') + '.xlsx'
+
         dest_wb.remove_sheet(dest_wb.get_sheet_by_name('Sheet'))
-        self.path_of_tplxlsx = os.path.join(self.path_of_outputdir, 'template' + '.xlsx')
+        self.path_of_tplxlsx = os.path.join(self.path_of_outputdir, file_name)
         dest_wb.save(self.path_of_tplxlsx)
 
     def return_tplpath(self):
