@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import os
 from datetime import datetime
 from jinja2 import Environment, Template
-import os
-from openpyxl import load_workbook
+from openpyxl import workbook, load_workbook
 
 
 class J2Render:
@@ -13,7 +13,7 @@ class J2Render:
         self.dict_of_parameter_host = {}
         self.text_of_j2 = ''
         self.path_of_module = ''
-        self.render_wb = ''
+        self.render_wb = workbook
 
     def create_file(self, key_of_parameter):
 

@@ -10,9 +10,9 @@ class ExecPykumin:
         num_of_space = int(dict_of_option['option_rowspace'])
 
         execpslsx = pslsx_process.ExecPslsx(dict_of_module, path_of_module, dict_of_parameter, dict_of_option)
-        execpslsx.get_keys()
+        execpslsx.get_modulekeys()
         execpslsx.get_outputpath()
-        execpslsx.get_spacerow(num_of_space)
+        execpslsx.get_rowspace(num_of_space)
         execpslsx.get_template()
         path_of_tplxlsx = execpslsx.return_tplpath()
 

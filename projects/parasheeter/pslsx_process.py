@@ -6,6 +6,7 @@ from copy import copy
 from openpyxl.utils import column_index_from_string, get_column_letter
 from datetime import datetime
 
+
 class ExecPslsx:
 
     def __init__(self, dict_of_module, path_of_module, dict_of_parameter, dict_of_option):
@@ -26,10 +27,10 @@ class ExecPslsx:
         self.path_of_outputdir = os.path.join(os.path.dirname(self.path_of_module), 'output', self.key_of_templatestr)
         os.makedirs(self.path_of_outputdir, exist_ok=True)
 
-    def get_keys(self):
+    def get_modulekeys(self):
         self.list_of_keys = list(self.dict_of_module.keys())
 
-    def get_spacerow(self, num_of_space):
+    def get_rowspace(self, num_of_space):
         self.num_of_space = num_of_space
 
     def get_template(self):
