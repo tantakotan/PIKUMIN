@@ -1,0 +1,8 @@
+﻿lucky_for_U,roomA,roomB,roomC
+U6,スプライスボックス,スプライスボックス,スプライスボックス
+U5,M/C * 2,M/C * 4,l2SwitchD
+U4,,l2SwitchE,ケーブルガイド
+U3,l2SwitchA,l2SwitchB,l2SwitchC
+U2,ケーブルガイド,ケーブルガイド,ケーブルガイド
+U1,UPS_upsA,UPS_upsB,UPS_upsC
+rack_name,rackA,rackB,rackC

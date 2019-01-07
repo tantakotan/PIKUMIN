@@ -68,15 +68,15 @@ class ExecPslsx:
                         dest_col = dest_ws.column_dimensions[get_column_letter(i)]
                         dest_col.width = source_col.width
 
-                for key, x in enumerate(source_ws.rows):
+                for key, x in enumerate(source_ws.iter_rows(min_row=nrow, max_row=xrow)):
 
                     for ind, source_cell in enumerate(x):
                         dest_cell = dest_ws[source_cell.coordinate]
 
                         num_of_row = dest_cell.row + position_row
                         num_of_column = column_index_from_string(dest_cell.column)
-
                         dest_cell = dest_ws.cell(row=num_of_row, column=num_of_column)
+
                         dest_cell.value = source_cell.value
 
                         if source_cell.has_style:
@@ -98,3 +98,17 @@ class ExecPslsx:
 
     def return_tplpath(self):
         return self.path_of_tplxlsx
+
+    def coloring_cells(self, list_of_files):
+        print(list_of_files)
+        for filepath in list_of_files:
+            wb = openpyxl.load_workbook(filepath)
+            for ws in wb.worksheets:
+                for index, ws_row in enumerate(ws.iter_rows()):
+                    cells = list(cell for cell in ws_row if cell.value and isinstance(cell.value, str))
+                    for cell in cells:
+                        print(cell.value, cell)
+                        if cell.value in 'ケーブルガイド':
+                            cell.font = openpyxl.styles.fonts.Font(color='FFFFFF')
+                            cell.fill = openpyxl.styles.PatternFill(patternType='solid', start_color='000000', end_color='000000')
+                wb.save(filepath)

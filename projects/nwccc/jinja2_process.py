@@ -14,6 +14,7 @@ class J2Render:
         self.text_of_j2 = ''
         self.path_of_module = ''
         self.render_wb = workbook
+        self.list_of_createfiles = []
 
     def create_file(self, key_of_parameter):
 
@@ -35,6 +36,10 @@ class J2Render:
         self.render_wb.save(s3)
 
         print('create file successfuly...: ' + s3)
+
+        self.list_of_createfiles.append(s3)
+
+        return self.list_of_createfiles
 
     def create_outputdir(self, path_of_module):
         self.path_of_module = os.path.join(os.path.dirname(path_of_module), 'output', self.key_of_templatestring)
