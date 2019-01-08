@@ -1,2 +1,2 @@
-# PIKUMIN
-Code name "PIKUMIN"
+# PYKUMIN
+Code name "PYKUMIN"
