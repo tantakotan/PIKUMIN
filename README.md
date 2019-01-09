@@ -1,7 +1,8 @@
 # PYKUMIN
 Code name "PYKUMIN"
 
-![PYKUMIN]https://github.com/tantakotan/PIKUMIN/blob/master/PYKUMINArchitecture.png
+![PYKUMIN](https://user-images.githubusercontent.com/26395852/50912490-a399b700-1475-11e9-8571-82dfbaa2f6e9.png)
+
 - PPP が .ini のキーワードから CSV を処理し、そのパラメータやら何やらをPPMが各モジュールに渡すの図。
 
 # 概要
