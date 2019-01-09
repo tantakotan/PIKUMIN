@@ -1,7 +1,7 @@
 # PYKUMIN
 Code name "PYKUMIN"
 
-![PYKUMIN](https://user-images.githubusercontent.com/26395852/50912490-a399b700-1475-11e9-8571-82dfbaa2f6e9.png)
+![PYKUMIN](https://user-images.githubusercontent.com/26395852/50912580-d348bf00-1475-11e9-90b1-28410120384d.png)
 
 - PPP が .ini のキーワードから CSV を処理し、そのパラメータやら何やらをPPMが各モジュールに渡すの図。
 
